@@ -1,7 +1,3 @@
-> **TODO: overiť s právnikom pred zverejnením.** Sekcia „Prehlásenie
-> prispievateľa (CLA)" nižšie má právne dôsledky — text je napísaný
-> zrozumiteľne, ale nie je (a nemá nahrádzať) overené právnikom.
-
 # Ako prispieť
 
 Ďakujeme za záujem prispieť do tohto projektu. Tento dokument popisuje, ako
