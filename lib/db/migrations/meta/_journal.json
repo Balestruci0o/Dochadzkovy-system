@@ -1,0 +1,370 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1783934519951,
+      "tag": "0000_clammy_spacker_dave",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1783934582852,
+      "tag": "0001_raw_triggers_rls",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1783934848580,
+      "tag": "0002_app_role_grants",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1783935393747,
+      "tag": "0003_disable_default_rls",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1783936476526,
+      "tag": "0004_full_rls_coverage",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1783959242677,
+      "tag": "0005_users_self_service_and_manager_visibility",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1783961459326,
+      "tag": "0006_fix_users_self_update_recursion",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1784027547142,
+      "tag": "0007_login_events_rate_limit_indexes",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1784029446987,
+      "tag": "0008_employees_insert_manager",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1784034709869,
+      "tag": "0009_org_scope_settings_and_terminals",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1784114755516,
+      "tag": "0010_absences_rls",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1784136268574,
+      "tag": "0011_qr_tokens_self_insert",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1784500000000,
+      "tag": "0012_workplace_scope_shift_templates_coverage",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1784600000000,
+      "tag": "0013_schedule_violations_write",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1784700000000,
+      "tag": "0014_coverage_requirements_shift_template",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1784800000000,
+      "tag": "0015_work_time_mode",
+      "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1784900000000,
+      "tag": "0016_absence_requests_materialize",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1784900100000,
+      "tag": "0017_absence_materialize_security_definer",
+      "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1784900200000,
+      "tag": "0018_absence_requests_self_cancel",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1784900300000,
+      "tag": "0019_notifications_infra",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1784900400000,
+      "tag": "0020_notification_recipients_security_definer",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1784900500000,
+      "tag": "0021_notifications_email_channel",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1784900600000,
+      "tag": "0022_attendance_night_hours",
+      "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1784900700000,
+      "tag": "0023_shift_template_break_mode",
+      "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1784900800000,
+      "tag": "0024_break_tracking_mode",
+      "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1784900900000,
+      "tag": "0025_punch_events_kind",
+      "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "7",
+      "when": 1784901000000,
+      "tag": "0026_employees_self_select",
+      "breakpoints": true
+    },
+    {
+      "idx": 27,
+      "version": "7",
+      "when": 1784901100000,
+      "tag": "0027_email_otp_2fa",
+      "breakpoints": true
+    },
+    {
+      "idx": 28,
+      "version": "7",
+      "when": 1784901200000,
+      "tag": "0028_email_otp_attempts_ip_index",
+      "breakpoints": true
+    },
+    {
+      "idx": 29,
+      "version": "7",
+      "when": 1784901300000,
+      "tag": "0029_work_time_mode_employee_only",
+      "breakpoints": true
+    },
+    {
+      "idx": 30,
+      "version": "7",
+      "when": 1784901400000,
+      "tag": "0030_contract_hours_per_month",
+      "breakpoints": true
+    },
+    {
+      "idx": 31,
+      "version": "7",
+      "when": 1784901500000,
+      "tag": "0031_contact_fields",
+      "breakpoints": true
+    },
+    {
+      "idx": 32,
+      "version": "7",
+      "when": 1784901600000,
+      "tag": "0032_destructive_action_codes",
+      "breakpoints": true
+    },
+    {
+      "idx": 33,
+      "version": "7",
+      "when": 1784901700000,
+      "tag": "0033_employee_delete_bypass",
+      "breakpoints": true
+    },
+    {
+      "idx": 34,
+      "version": "7",
+      "when": 1784901800000,
+      "tag": "0034_employee_pairings",
+      "breakpoints": true
+    },
+    {
+      "idx": 35,
+      "version": "7",
+      "when": 1784901900000,
+      "tag": "0035_employee_can_punch_web",
+      "breakpoints": true
+    },
+    {
+      "idx": 36,
+      "version": "7",
+      "when": 1784902000000,
+      "tag": "0036_punch_events_void_and_audit",
+      "breakpoints": true
+    },
+    {
+      "idx": 37,
+      "version": "7",
+      "when": 1784902100000,
+      "tag": "0037_missing_punch_requests",
+      "breakpoints": true
+    },
+    {
+      "idx": 38,
+      "version": "7",
+      "when": 1784902200000,
+      "tag": "0038_shift_leader_flags",
+      "breakpoints": true
+    },
+    {
+      "idx": 39,
+      "version": "7",
+      "when": 1784902300000,
+      "tag": "0039_shift_leader_assignments",
+      "breakpoints": true
+    },
+    {
+      "idx": 40,
+      "version": "7",
+      "when": 1784902400000,
+      "tag": "0040_published_shifts",
+      "breakpoints": true
+    },
+    {
+      "idx": 41,
+      "version": "7",
+      "when": 1784902500000,
+      "tag": "0041_scheduled_shifts_employee_published_only",
+      "breakpoints": true
+    },
+    {
+      "idx": 42,
+      "version": "7",
+      "when": 1784902600000,
+      "tag": "0042_backfill_published_shifts",
+      "breakpoints": true
+    },
+    {
+      "idx": 43,
+      "version": "7",
+      "when": 1784902700000,
+      "tag": "0043_audit_log_org_id",
+      "breakpoints": true
+    },
+    {
+      "idx": 44,
+      "version": "7",
+      "when": 1784902800000,
+      "tag": "0044_user_soft_delete",
+      "breakpoints": true
+    },
+    {
+      "idx": 45,
+      "version": "7",
+      "when": 1784902900000,
+      "tag": "0045_audit_log_org_scope",
+      "breakpoints": true
+    },
+    {
+      "idx": 46,
+      "version": "7",
+      "when": 1784903000000,
+      "tag": "0046_pay_mode",
+      "breakpoints": true
+    },
+    {
+      "idx": 47,
+      "version": "7",
+      "when": 1784903100000,
+      "tag": "0047_manager_permissions",
+      "breakpoints": true
+    },
+    {
+      "idx": 48,
+      "version": "7",
+      "when": 1784903200000,
+      "tag": "0048_manager_permissions_settings",
+      "breakpoints": true
+    },
+    {
+      "idx": 49,
+      "version": "7",
+      "when": 1784903300000,
+      "tag": "0049_manager_permissions_accounts",
+      "breakpoints": true
+    },
+    {
+      "idx": 50,
+      "version": "7",
+      "when": 1784903400000,
+      "tag": "0050_manager_permissions_wages",
+      "breakpoints": true
+    },
+    {
+      "idx": 51,
+      "version": "7",
+      "when": 1784903500000,
+      "tag": "0051_departure_mode",
+      "breakpoints": true
+    }
+  ]
+}

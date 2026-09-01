@@ -1,0 +1,13 @@
+{
+  "regions": ["fra1"],
+  "crons": [
+    {
+      "path": "/api/cron/auto-close",
+      "schedule": "5 0 * * *"
+    },
+    {
+      "path": "/api/cron/generate-schedule",
+      "schedule": "0 3 * * *"
+    }
+  ]
+}

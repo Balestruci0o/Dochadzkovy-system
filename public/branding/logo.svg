@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+  <!--
+    Predvolené neutrálne logo — prepíš vlastným (rovnaká cesta
+    public/branding/logo.svg, alebo inú cestu nastav cez env
+    NEXT_PUBLIC_BRAND_LOGO). Odporúčania pri vlastnom logu:
+      - štvorcový viewBox (rovnaká šírka a výška),
+      - bez textu (názov firmy sa vypisuje samostatne vedľa loga, viď
+        BrandLogo / sidebar),
+      - stroke="currentColor", nech logo prevezme farbu textu okolo seba.
+  -->
+  <circle cx="50" cy="50" r="42" />
+  <path d="M50 28 L50 50 L66 62" />
+</svg>

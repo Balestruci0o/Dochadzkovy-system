@@ -1,0 +1,1 @@
+CREATE INDEX "email_otp_attempts_ip_created_at_index" ON "email_otp_attempts" USING btree ("ip","created_at" DESC NULLS LAST) WHERE "email_otp_attempts"."success" = false;

@@ -1,0 +1,57 @@
+/**
+ * Šablóna na prebitie farebnej palety appky vlastnou značkou.
+ *
+ * Načíta sa AŽ PO `globals.css` (viď import v app/layout.tsx, poradie je
+ * zámerné) — vďaka tomu tu stačí odkomentovať premenné, ktoré chceš zmeniť,
+ * a Cascade ich prebije nad predvolenými hodnotami z `globals.css`. Ostatné
+ * necháš zakomentované a appka použije default.
+ *
+ * `globals.css` sa NIKDY needituje priamo — je to zdieľaný súbor appky a pri
+ * `git pull` (aktualizácii na novšiu verziu appky) by úpravy v ňom viedli ku
+ * konfliktom. Celá vlastná paleta patrí sem.
+ *
+ * V predvolenom stave je tento súbor no-op (všetko zakomentované) — appka
+ * beží s paletou z `globals.css`.
+ */
+
+:root {
+  /* --- Hlavná akčná farba (tlačidlá, aktívne stavy, zvýraznenia) --- */
+  /* --color-orange: #e0700f; */
+  /* --color-orange-dark: #bf5c07; */
+  /* --color-orange-tint: #fbeedf; */
+
+  /* --- Doplnková farba (sekundárne zvýraznenia, aktívna položka menu) --- */
+  /* --color-sage: #7e9082; */
+  /* --color-sage-dark: #5c6e60; */
+  /* --color-sage-bg: #e9ede9; */
+  /* --color-sage-tint: #eef2ee; */
+  /* --color-gold: #cf982a; */
+  /* --color-gold-tint: #f8efd6; */
+
+  /* --- Text a podklady --- */
+  /* --color-ink: #1c1b19; */
+  /* --color-ink-soft: #6a675f; */
+  /* --color-ink-faint: #9c988e; */
+  /* --color-paper: #ffffff; */
+  /* --color-cream: #faf8f3; */
+  /* --color-cream-2: #f3efe7; */
+  /* --color-line: #e7e3da; */
+  /* --color-line-soft: #f0ece3; */
+
+  /* --- Stavové farby ---
+     POZOR: tieto farby NESÚ VÝZNAM, nielen vzhľad (napr. "ok" = zelená,
+     "meškanie" = oranžová naprieč celou appkou). Ak ich meníš, zachovaj
+     rozlíšiteľnosť a očakávanú sémantiku (zelená = v poriadku, teplá farba
+     = problém/meškanie, sivá = neprítomnosť) — inak zamestnanci a manažéri
+     budú kalendár a výkazy čítať nesprávne. */
+  /* --color-ok: #5c8a5e; */
+  /* --color-ok-tint: #e6efe3; */
+  /* --color-late: #c9692e; */
+  /* --color-late-tint: #fae9dc; */
+  /* --color-absent: #b0aba0; */
+
+  /* --- Zaoblenie rohov --- */
+  /* --radius-sm: 9px; */
+  /* --radius-md: 14px; */
+  /* --radius-lg: 22px; */
+}

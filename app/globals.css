@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+/*
+  Predvolená farebná paleta a typografia appky — krémová/oranžová/šalviová/
+  zlatá. Vlastnú značku prebi cez app/branding.css, needituj tento súbor
+  priamo (viď hlavička branding.css).
+*/
+@theme {
+  --color-ink: #1c1b19;
+  --color-ink-soft: #6a675f;
+  --color-ink-faint: #9c988e;
+  --color-paper: #ffffff;
+  --color-cream: #faf8f3;
+  --color-cream-2: #f3efe7;
+  --color-orange: #e0700f;
+  --color-orange-dark: #bf5c07;
+  --color-orange-tint: #fbeedf;
+  --color-sage: #7e9082;
+  --color-sage-dark: #5c6e60;
+  --color-sage-bg: #e9ede9;
+  --color-sage-tint: #eef2ee;
+  --color-gold: #cf982a;
+  --color-gold-tint: #f8efd6;
+  --color-line: #e7e3da;
+  --color-line-soft: #f0ece3;
+  --color-ok: #5c8a5e;
+  --color-ok-tint: #e6efe3;
+  --color-late: #c9692e;
+  --color-late-tint: #fae9dc;
+  --color-absent: #b0aba0;
+
+  --radius-sm: 9px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+
+  --font-sans: var(--font-archivo), system-ui, sans-serif;
+  --font-serif: var(--font-spectral), Georgia, serif;
+}
+
+body {
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}

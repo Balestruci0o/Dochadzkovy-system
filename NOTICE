@@ -1,0 +1,25 @@
+Tento softvér je licencovaný pod GNU Affero General Public License,
+verzia 3 alebo novšia (AGPL-3.0-or-later). Plné, záväzné znenie licencie
+je v súbore LICENSE v koreni tohto repozitára.
+
+Tento súbor je len zrozumiteľné zhrnutie pre bežného čitateľa —
+NIE JE právne záväzný text. Pri akomkoľvek rozpore medzi týmto zhrnutím
+a súborom LICENSE platí výhradne LICENSE.
+
+Čo to v praxi znamená:
+
+- Kód si smieš voľne stiahnuť, používať, upravovať a nasadiť pre vlastnú
+  firmu alebo klienta — bez poplatku, bez povolenia.
+
+- Ak systém (aj upravený) prevádzkuješ ako službu, ku ktorej majú prístup
+  iní ľudia cez sieť (napr. tvoji zamestnanci sa prihlasujú cez webové
+  rozhranie), AGPL ťa zaväzuje sprístupniť zdrojový kód tvojich úprav
+  týmto používateľom. Toto je hlavný rozdiel oproti bežnej GPL — sieťové
+  poskytovanie služby sa počíta rovnako ako distribúcia kópie softvéru.
+
+- Ak by si chcel systém uzavrieť (neposkytovať zdrojový kód svojich úprav)
+  alebo ho šíriť pod inou licenciou než AGPL — napríklad ako súčasť
+  vlastného uzavretého produktu — potrebuješ na to komerčnú licenciu od
+  autora. Bez nej to AGPL nedovoľuje.
+
+Kontakt na komerčnú licenciu: support@martin-pavlik.com.

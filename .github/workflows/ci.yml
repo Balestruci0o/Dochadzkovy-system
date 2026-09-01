@@ -1,0 +1,215 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch: {}
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: "20"
+
+jobs:
+  # Beží vždy, bez akýchkoľvek tajomstiev — musí byť zelená.
+  kontrola:
+    name: Kontrola (lint, typecheck, unit testy)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run test:unit
+
+  # Next.js build potrebuje niekoľko premenných PRI BUILDE (nie za behu) —
+  # `lib/db/admin.ts`/`lib/db/index.ts` vyhodia chybu už pri importe, ak
+  # DATABASE_URL/APP_DATABASE_URL chýba, a Next.js pri "Collecting page
+  # data" niektoré route moduly (napr. /api/cron/*) importuje. Overené
+  # priamo: build NEPOTREBUJE živé pripojenie (postgres.js sa pripája
+  # LENIVO, až pri prvom dopyte) — stačí, že premenné majú AKÚKOĽVEK
+  # syntakticky rozumnú hodnotu. Hodnoty nižšie sú zjavne neplatné
+  # zástupky, nikdy sa nimi nič neposiela ani nepripája naostro.
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+        env:
+          DATABASE_URL: postgres://build:build@localhost:5432/build
+          APP_DATABASE_URL: postgres://build:build@localhost:5432/build
+          NEXT_PUBLIC_SUPABASE_URL: https://example.invalid
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: build-placeholder-key
+          SUPABASE_SECRET_KEY: build-placeholder-secret
+          QR_TOKEN_SECRET: WXR22ytNN3OSFAICZfJ44Tjk0lmx5OHKP0u8RrGaLVQ=
+          TERMINAL_SECRET_ENCRYPTION_KEY: 4lFXStSS74Rj6qbX3B2X/sk+pqBcYDujZjTPGtcbNxs=
+          CRON_SECRET: build-placeholder-cron-secret
+          NEXT_PUBLIC_APP_URL: https://example.invalid
+
+  # Testy proti skutočnému Postgresu (migrácie, RLS pod app_user, generátor
+  # cez DB-loading vrstvu) + overenie `npm run setup` proti čerstvej DB.
+  #
+  # DÔLEŽITÉ OBMEDZENIE (zámerné, nie prehliadnuté): 9 z 48 "*.db.test.ts"
+  # súborov sa vynecháva z tohto automatického behu, lebo potrebujú NIELEN
+  # Postgres, ale AJ skutočný dosiahnuteľný Supabase projekt:
+  #   - 4 súbory (lib/auth/create-account-with-password, delete-account,
+  #     invite-employee, session) volajú Supabase Auth admin API
+  #     (createUser/deleteUser/signInWithPassword) — obyčajný `postgres:15`
+  #     kontajner Auth server neposkytuje.
+  #   - 5 súborov (lib/db/rls-authenticated a 4×
+  #     lib/db/manager-permissions-*-rls) bežia pod Postgres rolou
+  #     "authenticated", ktorú v skutočnej prevádzke vytvára a plným CRUD
+  #     grantom na každej tabuľke vybavuje SAMOTNÝ Supabase pri inicializácii
+  #     projektu — nie naše migrácie (zámerne, viď schema.sql aj komentáre
+  #     v týchto testoch). Vanilla postgres:15 túto rolu nemá.
+  # Simulovať oboje v CI by znamenalo buď dopĺňať tajomstvá k reálnemu
+  # Supabase projektu (mimo rozsahu tohto repozitára), alebo ručne
+  # napodobiť Supabase-špecifickú inicializáciu Postgresu spôsobom, ktorého
+  # zhoda so skutočným Supabase by nebola overiteľná — radšej priznané a
+  # vynechané z automatického behu, než falošne zelené alebo trvale
+  # červené. Zvyšných 39 súborov automaticky beží a musí byť zelených.
+  #
+  # Fáza L (balík L6, 2026-08-25) — všetkých 9 vynechaných súborov teraz
+  # OVERENE prechádza (48/48, 405/405 testov) proti plnému lokálnemu
+  # Supabase stacku (`npm run dev:bootstrap` + `npm run test:db`,
+  # `supabase/config.toml` má `auto_expose_new_tables = true` presne pre
+  # tento účel — viď komentár tam aj docs/DEVELOPMENT.md). Nezostávajú tu
+  # vynechané preto, že by boli rozbité — CI stále beží proti vanilla
+  # `postgres:16` bez Supabase Auth/rolí, takže sa tu spustiť naozaj nedajú.
+  db:
+    name: DB testy (Postgres)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
+      APP_DB_PASSWORD: ci-app-user-password
+      APP_DATABASE_URL: postgres://app_user:ci-app-user-password@localhost:5432/postgres
+      NEXT_PUBLIC_SUPABASE_URL: https://example.invalid
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ci-placeholder-key
+      SUPABASE_SECRET_KEY: ci-placeholder-secret
+      QR_TOKEN_SECRET: WXR22ytNN3OSFAICZfJ44Tjk0lmx5OHKP0u8RrGaLVQ=
+      TERMINAL_SECRET_ENCRYPTION_KEY: 4lFXStSS74Rj6qbX3B2X/sk+pqBcYDujZjTPGtcbNxs=
+      CRON_SECRET: ci-placeholder-cron-secret
+      NEXT_PUBLIC_APP_URL: https://example.invalid
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+
+      # Migrácie (lib/db/migrations/0000_...) tieto rozšírenia zakladajú aj
+      # samy — tento krok je zámerne redundantný, len istota, že rola, pod
+      # ktorou migrácie bežia, má na CREATE EXTENSION právo.
+      - name: Vytvorenie rozšírení
+        run: |
+          psql "$DATABASE_URL" -c 'CREATE EXTENSION IF NOT EXISTS "pgcrypto";'
+          psql "$DATABASE_URL" -c 'CREATE EXTENSION IF NOT EXISTS "btree_gist";'
+
+      - name: Migrácie
+        run: npm run db:migrate
+
+      - name: Heslo pre rolu app_user
+        run: node scripts/setup-app-role-password.mjs
+
+      - name: Testy proti DB (bez tých, čo potrebujú živý Supabase)
+        run: >-
+          npx vitest run .db.test.
+          --exclude '**/create-account-with-password.db.test.ts'
+          --exclude '**/delete-account.db.test.ts'
+          --exclude '**/invite-employee.db.test.ts'
+          --exclude '**/session.db.test.ts'
+          --exclude '**/rls-authenticated.db.test.ts'
+          --exclude '**/manager-permissions-accounts-rls.db.test.ts'
+          --exclude '**/manager-permissions-rls.db.test.ts'
+          --exclude '**/manager-permissions-settings-rls.db.test.ts'
+          --exclude '**/manager-permissions-wages-rls.db.test.ts'
+
+      # `npm run setup` spúšťa `tsx --env-file=.env.local ...` — Node-ov
+      # natívny `--env-file` prepínač CHYBOU SKONČÍ, ak súbor vôbec
+      # neexistuje (overené priamo), aj keď všetky premenné už má v
+      # `process.env` z `env:` bloku vyššie. `.env.local` sa do repozitára
+      # nekomituje (`.gitignore`), takže v CI neexistuje — prázdny súbor mu
+      # stačí, aby prepínač prešiel; existujúce premenné prostredia sa ním
+      # neprepíšu (overené priamo).
+      - name: Prázdny .env.local (Node --env-file vyžaduje existujúci súbor)
+        run: touch .env.local
+
+      # Overenie `npm run setup` proti čerstvej DB (Fáza B, nikdy predtým
+      # neodskúšané naostro). Konto majiteľa potrebuje Supabase Auth admin
+      # API, ktoré tu nie je dosiahnuteľné (SUPABASE_SECRET_KEY vyššie je
+      # zjavná zástupka) — očakávaný výsledok PRETO NIE JE úspech, ale
+      # KONTROLOVANÉ zlyhanie presne na tomto kroku, s funkčným
+      # kompenzačným mazaním (org/prevádzka/§ZP pravidlá sa najprv naozaj
+      # založia — inak by nebolo čo upratovať — a potom kompenzačne zmažú).
+      # To, že sa dostane až SEM a zmaže presne to, čo predtým založilo, je
+      # samo o sebe hodnotné overenie: dokazuje, že organizácia, prevádzka
+      # aj §ZP pravidlá sa v transakcii pred týmto krokom naozaj zapísali.
+      - name: Overenie npm run setup (--dry-run)
+        run: >-
+          npm run setup -- --non-interactive --dry-run
+          --org-name "CI Test s.r.o."
+          --workplace-name "Hlavná prevádzka"
+          --workplace-code "HLAVNA"
+          --owner-name "CI Owner"
+          --owner-email "ci-owner@example.com"
+          --owner-password "Ci-Test-Heslo-2026-Setup!"
+
+      - name: Overenie npm run setup (skutočný beh, očakávané kontrolované zlyhanie na Supabase Auth kroku)
+        run: |
+          set +e
+          OUTPUT=$(npm run setup -- --non-interactive \
+            --org-name "CI Test s.r.o." \
+            --workplace-name "Hlavná prevádzka" \
+            --workplace-code "HLAVNA" \
+            --owner-name "CI Owner" \
+            --owner-email "ci-owner@example.com" \
+            --owner-password "Ci-Test-Heslo-2026-Setup!" 2>&1)
+          EXIT_CODE=$?
+          echo "$OUTPUT"
+
+          if [ "$EXIT_CODE" -eq 0 ]; then
+            echo "::error::npm run setup neočakávane uspel bez živého Supabase Auth — over, či sa SUPABASE_SECRET_KEY zástupka naozaj používa."
+            exit 1
+          fi
+
+          if ! echo "$OUTPUT" | grep -q "Upratané, v databáze nezostali žiadne čiastočné dáta."; then
+            echo "::error::Skript zlyhal, ale kompenzačné mazanie nepotvrdilo úspešný úklon — pozri výstup vyššie."
+            exit 1
+          fi
+
+          REMAINING=$(psql "$DATABASE_URL" -t -A -c "SELECT count(*) FROM organizations;")
+          if [ "$REMAINING" != "0" ]; then
+            echo "::error::Po kontrolovanom zlyhaní ostala v organizations $REMAINING riadkov namiesto 0 — kompenzačné mazanie nefungovalo."
+            exit 1
+          fi
+
+          echo "OK: npm run setup založil organizáciu/prevádzku/§ZP pravidlá, zlyhal presne na Supabase Auth kroku (očakávané, žiadny živý Supabase tu nie je) a kompenzačne upratal."

@@ -1,0 +1,2 @@
+CREATE INDEX "login_events_email_tried_created_at_index" ON "login_events" USING btree ("email_tried","created_at" DESC NULLS LAST) WHERE "login_events"."success" = false;--> statement-breakpoint
+CREATE INDEX "login_events_ip_created_at_index" ON "login_events" USING btree ("ip","created_at" DESC NULLS LAST) WHERE "login_events"."success" = false;
