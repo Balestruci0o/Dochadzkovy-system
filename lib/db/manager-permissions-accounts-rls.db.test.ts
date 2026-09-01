@@ -29,7 +29,6 @@ let managerNoAccountsUserId: string; // baseline manažér — žiadny balíček
 let managerWithAccountsUserId: string;
 let peerManagerUserId: string; // iný manažér VLASTNEJ organizácie — cieľ pokusu o cudzie manager_permissions
 let employeeUserId: string;
-let otherOrgOwnerUserId: string;
 let otherOrgManagerWithAccountsUserId: string;
 
 beforeAll(async () => {
@@ -54,14 +53,13 @@ beforeAll(async () => {
   peerManagerUserId = peerManager.id;
   employeeUserId = employee.id;
 
-  const [otherOwner, otherManager] = await adminDb
+  const [, otherManager] = await adminDb
     .insert(users)
     .values([
       { orgId: otherOrgId, email: `owner-${crypto.randomUUID()}@mp-accounts-rls.local`, role: "owner", fullName: "Majiteľ inej org" },
       { orgId: otherOrgId, email: `mgr-${crypto.randomUUID()}@mp-accounts-rls.local`, role: "manager", fullName: "Manažér inej org" },
     ])
     .returning();
-  otherOrgOwnerUserId = otherOwner.id;
   otherOrgManagerWithAccountsUserId = otherManager.id;
 
   await adminDb.insert(managerPermissions).values({ userId: managerWithAccountsUserId, manageAccounts: true });

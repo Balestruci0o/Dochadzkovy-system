@@ -12,7 +12,9 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  NODE_VERSION: "20"
+  # Node 22 (LTS): Node 20 GitHub vyraďuje z runnerov a @supabase/supabase-js
+  # už hlási koniec podpory pre Node ≤ 20.
+  NODE_VERSION: "22"
 
 jobs:
   # Beží vždy, bez akýchkoľvek tajomstiev — musí byť zelená.
@@ -20,8 +22,8 @@ jobs:
     name: Kontrola (lint, typecheck, unit testy)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -42,8 +44,8 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -119,8 +121,8 @@ jobs:
       CRON_SECRET: ci-placeholder-cron-secret
       NEXT_PUBLIC_APP_URL: https://example.invalid
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -140,18 +142,17 @@ jobs:
       - name: Heslo pre rolu app_user
         run: node scripts/setup-app-role-password.mjs
 
-      - name: Testy proti DB (bez tých, čo potrebujú živý Supabase)
-        run: >-
-          npx vitest run .db.test.
-          --exclude '**/create-account-with-password.db.test.ts'
-          --exclude '**/delete-account.db.test.ts'
-          --exclude '**/invite-employee.db.test.ts'
-          --exclude '**/session.db.test.ts'
-          --exclude '**/rls-authenticated.db.test.ts'
-          --exclude '**/manager-permissions-accounts-rls.db.test.ts'
-          --exclude '**/manager-permissions-rls.db.test.ts'
-          --exclude '**/manager-permissions-settings-rls.db.test.ts'
-          --exclude '**/manager-permissions-wages-rls.db.test.ts'
+      # PORADIE KROKOV JE ZÁMERNÉ — NEPREHADZOVAŤ. Overenie `npm run setup`
+      # (trojica krokov nižšie) MUSÍ bežať PRED "Testy proti DB" — ten je
+      # preto zámerne posledný krok tejto úlohy. Dôvod: `scripts/setup.ts`
+      # má poistku, ktorá beh SPRÁVNE odmietne, ak v databáze už existuje
+      # čo i len jedna organizácia (ochrana pred behom nad živými dátami).
+      # "Testy proti DB" po sebe testovacie organizácie NEUPRATUJÚ, takže
+      # keby setup bežal až za nimi, zlyhal by na tejto poistke ("V
+      # databáze už existuje organizácia …") aj pri úplne zdravom kóde a
+      # zdravej poistke. Hneď po migráciách je databáza čerstvá; skutočný
+      # beh setup (posledný z trojice) po sebe kompenzačne maže, takže
+      # databáza ostane čistá pre "Testy proti DB" hneď za ním.
 
       # `npm run setup` spúšťa `tsx --env-file=.env.local ...` — Node-ov
       # natívny `--env-file` prepínač CHYBOU SKONČÍ, ak súbor vôbec
@@ -213,3 +214,20 @@ jobs:
           fi
 
           echo "OK: npm run setup založil organizáciu/prevádzku/§ZP pravidlá, zlyhal presne na Supabase Auth kroku (očakávané, žiadny živý Supabase tu nie je) a kompenzačne upratal."
+
+      # AŽ TERAZ — tento krok si v databáze NECHÁVA testovacie organizácie
+      # (nemá globálny cleanup), preto ide zámerne posledný, za overením
+      # `npm run setup` vyššie. Viď komentár k poradiu pri kroku "Prázdny
+      # .env.local".
+      - name: Testy proti DB (bez tých, čo potrebujú živý Supabase)
+        run: >-
+          npx vitest run .db.test.
+          --exclude '**/create-account-with-password.db.test.ts'
+          --exclude '**/delete-account.db.test.ts'
+          --exclude '**/invite-employee.db.test.ts'
+          --exclude '**/session.db.test.ts'
+          --exclude '**/rls-authenticated.db.test.ts'
+          --exclude '**/manager-permissions-accounts-rls.db.test.ts'
+          --exclude '**/manager-permissions-rls.db.test.ts'
+          --exclude '**/manager-permissions-settings-rls.db.test.ts'
+          --exclude '**/manager-permissions-wages-rls.db.test.ts'

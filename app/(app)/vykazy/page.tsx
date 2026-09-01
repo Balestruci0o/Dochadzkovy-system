@@ -29,9 +29,6 @@ function fmtH(n: number): string {
 function fmtEur(n: number): string {
   return `${n.toFixed(2).replace(".", ",")} €`;
 }
-function fmtEurOrDash(n: number | null): string {
-  return n === null ? "—" : fmtEur(n);
-}
 /** Fáza 4 (Mzdy) — "•••" LEN keď je za tým skutočné číslo (null = neaplikovateľné, napr. hodinový nemá fix, nie skryté). */
 function fmtEurOrDashMasked(n: number | null, canSeeWages: boolean): string {
   if (n === null) return "—";

@@ -14,9 +14,6 @@ function fmtH(n: number): string {
 function fmtEur(n: number): string {
   return `${n.toFixed(2).replace(".", ",")} €`;
 }
-function fmtEurOrDash(n: number | null): string {
-  return n === null ? "—" : fmtEur(n);
-}
 const HIDDEN_AMOUNT = "•••";
 /** Fáza 4 (Mzdy) — "•••" LEN keď je za tým skutočné číslo (viď rovnaká funkcia v employee-document.tsx). */
 function fmtEurOrDashMasked(n: number | null, canViewWages: boolean): string {
