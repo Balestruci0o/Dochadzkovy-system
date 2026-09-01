@@ -1,5 +1,7 @@
 # Dochádzka
 
+[![CI](https://github.com/Balestruci0o/Dochadzkovy-system/actions/workflows/ci.yml/badge.svg)](https://github.com/Balestruci0o/Dochadzkovy-system/actions/workflows/ci.yml)
+
 Dochádzkový a rozvrhový systém pre firmy s viacerými prevádzkami a zmennou
 prevádzkou — QR pípanie, generovanie rozvrhu podľa pravidiel, žiadosti o
 neprítomnosť a mesačné výkazy.
