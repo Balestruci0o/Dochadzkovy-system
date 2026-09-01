@@ -17,7 +17,7 @@ import { localDateStr, zonedTimeToUtc } from "@/lib/shared/time";
 import { filterActiveEventsForLocalDate, localDateWindowUtc, recomputeAttendanceDay } from "./attendance";
 
 /**
- * ULOHY.md 7f — ZÁSADNÁ ZMENA POLITIKY (po Bloku 8, 🔍): predtým tento cron
+ * ZÁSADNÁ ZMENA POLITIKY: predtým tento cron
  * uzavrel KAŽDÚ zabudnutú zmenu na plánovaný koniec (alebo 23:59 fallback) —
  * to bolo DOMÝŠĽANIE bez dôkazu, ktoré do mzdových podkladov vpisovalo hodiny,
  * čo sa reálne nemuseli odpracovať.
@@ -28,8 +28,8 @@ import { filterActiveEventsForLocalDate, localDateWindowUtc, recomputeAttendance
  * 1. PRESTÁVKOVÝ DÔKAZ (nezmenené, platí pre VŠETKÝCH nezávisle od režimu
  *    odchodu) — zamestnanec odišiel na PRESTÁVKU (posledné 'prestavka'
  *    razítko dňa je 'out') a nevrátil sa. Máme istotu, že do toho momentu
- *    tam ešte bol, `actualEnd` = presne ten čas. Toto je dôkaz, nie hádanie
- *    (CLAUDE.md princíp 7) — preto platí bez ohľadu na to, či si zamestnanec
+ *    tam ešte bol, `actualEnd` = presne ten čas. Toto je dôkaz, nie hádanie —
+ *    preto platí bez ohľadu na to, či si zamestnanec
  *    inak pípa odchod sám ("pipa") alebo nie ("nepipa").
  *
  * 2. REŽIM ODCHODU "nepipa" (nová podmienka, DOPĹŇA #1, nenahrádza) —
@@ -40,7 +40,7 @@ import { filterActiveEventsForLocalDate, localDateWindowUtc, recomputeAttendance
  *    `resolveDepartureMode`) je "nepipa" → uzavrie sa na KONCI PLÁNOVANEJ
  *    zmeny (`scheduled_shifts.end_time`, s ohľadom na `crosses_midnight`).
  *    Bez priradenej zmeny v ten deň sa NEUZAVIERA (niet z čoho vziať
- *    "plánovaný koniec" — CLAUDE.md princíp 7, radšej nič než domýšľanie).
+ *    "plánovaný koniec" — radšej nič než domýšľanie).
  *
  *    STRÁŽ proti predčasnému uzavretiu (nočné/crossesMidnight zmeny): cron
  *    beží raz denne skoro po polnoci a jeho dátumový filter (`date < dnes`)
@@ -73,7 +73,7 @@ import { filterActiveEventsForLocalDate, localDateWindowUtc, recomputeAttendance
  * Dávkovanie — JEDEN dopyt PER DISTINCT DÁTUM (nie per riadok), pokrývajúci
  * všetkých zamestnancov s otvorenou zmenou v ten deň naraz: prestávkové
  * udalosti aj naplánované zmeny sa dotiahnu hromadne, rovnaký vzor ako
- * pôvodná optimalizácia (OTAZKY.md #56). Režim odchodu (závisí len od
+ * pôvodná optimalizácia. Režim odchodu (závisí len od
  * zamestnanca/pozície, nie od dátumu) sa dotiahne JEDNÝM dopytom pre všetky
  * dotknuté `employeeId` naraz, mimo per-dátumovej slučky.
  */

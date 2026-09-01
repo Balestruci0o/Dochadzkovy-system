@@ -725,7 +725,7 @@ export const employeePairings = pgTable(
 
 // ---------------------------------------------------------------------------
 // PRAVIDLÁ PREVÁDZKY — minimálne pokrytie, §ZP limity. Konfigurovateľné,
-// pretože klient ich ešte nepozná (viď OTAZKY.md).
+// pretože klient ich ešte nepozná.
 // ---------------------------------------------------------------------------
 export const coverageRequirements = pgTable("coverage_requirements", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -733,10 +733,10 @@ export const coverageRequirements = pgTable("coverage_requirements", {
     .notNull()
     .references(() => workplaces.id, { onDelete: "cascade" }),
   positionId: uuid("position_id").references(() => positions.id),
-  // Blok 9d-4 (OTAZKY.md #42/#59) — KTORÚ zmenu má toto pokrytie obsadiť.
+  // KTORÚ zmenu má toto pokrytie obsadiť.
   // NULLABLE zámerne: existujúce riadky (a napr. Office, ktoré dnes nemá ANI
-  // JEDEN shift_template) nemajú platnú hodnotu na backfill — CLAUDE.md
-  // princíp 4, nezadrátovať odhad. Bez väzby generátor toto pravidlo
+  // JEDEN shift_template) nemajú platnú hodnotu na backfill — nezadrátovať
+  // odhad. Bez väzby generátor toto pravidlo
   // ignoruje (lib/scheduler/db-loader.ts), UI to viditeľne označí.
   shiftTemplateId: uuid("shift_template_id").references(() => shiftTemplates.id, { onDelete: "set null" }),
 
@@ -959,7 +959,7 @@ export const generationRuns = pgTable("generation_runs", {
 
 // ---------------------------------------------------------------------------
 // PORUŠENIA A DIERY — generátor nerobí násilie: nechá dieru a presne povie
-// prečo (viď CLAUDE.md, princíp 6).
+// prečo.
 // ---------------------------------------------------------------------------
 export const violationSeverityEnum = pgEnum("violation_severity", [
   "gap",
@@ -1210,8 +1210,8 @@ export const punchEvents = pgTable(
       mode: "number",
     }).references((): AnyPgColumn => punchEvents.id),
     correctionReason: text("correction_reason"),
-    // Granulárna oprava jednotlivého pípnutia — "zmazanie" (append-only, CLAUDE.md
-    // princíp 3): táto udalosť VÔBEC nepredstavuje reálne pípnutie, len anuluje
+    // Granulárna oprava jednotlivého pípnutia — "zmazanie" (append-only):
+    // táto udalosť VÔBEC nepredstavuje reálne pípnutie, len anuluje
     // pôvodnú (`corrects_event_id`) BEZ náhrady. Rozdiel od bežnej opravy (mení
     // čas/typ a NAHRÁDZA pôvodnú) — viď lib/punch/attendance.ts#eventsForLocalDate,
     // ktoré túto udalosť aj jej `corrects_event_id` cieľ vždy vynechá z výpočtu.

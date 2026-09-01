@@ -95,12 +95,12 @@ export function absenceDaysToHours(days: number): number {
 }
 
 /**
- * Blok 12 — dátový základ výkazu (mesačný prehľad prevádzky). Číta VÝHRADNE
- * už existujúce, priebežne počítané dáta (`attendance_days` z Bloku 6/8/12,
- * `absences` z Bloku 10) — nič sa tu prepočítava naново, len sa agreguje za
+ * Dátový základ výkazu (mesačný prehľad prevádzky). Číta VÝHRADNE
+ * už existujúce, priebežne počítané dáta (`attendance_days`,
+ * `absences`) — nič sa tu prepočítava naново, len sa agreguje za
  * obdobie. Jediný nový výpočet oproti dennému `calculateAttendanceDay` je
- * mzda: `getRateAt()` (Blok 8, doteraz nikde reálne zapojené) sa volá PRE
- * KAŽDÝ DEŇ ZVLÁŠŤ (CLAUDE.md princíp 8) — ak sa sadzba zmení v priebehu
+ * mzda: `getRateAt()` (doteraz nikde reálne zapojené) sa volá PRE
+ * KAŽDÝ DEŇ ZVLÁŠŤ — ak sa sadzba zmení v priebehu
  * mesiaca, dni pred zmenou a po zmene majú každý svoju.
  *
  * "Hrubá mzda" = Σ (workedHours+overtimeHours dňa) × (sadzba PLATNÁ ten deň).
@@ -189,7 +189,7 @@ export async function buildMonthlySummary(tx: Db, workplaceId: string, year: num
   const employeeIds = employeeRows.map((r) => r.employee.id);
 
   // Pozícia PLATNÁ počas mesiaca (rovnaké zjednodušenie ako db-loader.ts,
-  // OTAZKY.md #59 — pri zmene uprostred mesiaca berie tú s najneskorším valid_from).
+  // pri zmene uprostred mesiaca berie tú s najneskorším valid_from).
   const positionHistoryRows = await tx
     .select()
     .from(employeePositionHistory)
@@ -237,7 +237,7 @@ export async function buildMonthlySummary(tx: Db, workplaceId: string, year: num
   for (const row of vacationYtdRows) {
     // Celodenná dovolenka (hours=NULL) = 1 deň. Čiastočná (hours nastavené,
     // zvyčajne paragraf/lekár, zriedka dovolenka) = pomerná časť z 8h dňa —
-    // zjednodušenie, zapísané ako otvorená otázka v OTAZKY.md.
+    // zjednodušenie.
     const dayFraction = row.hours ? Number(row.hours) / 8 : 1;
     vacationTakenByEmployee.set(row.employeeId, (vacationTakenByEmployee.get(row.employeeId) ?? 0) + dayFraction);
   }

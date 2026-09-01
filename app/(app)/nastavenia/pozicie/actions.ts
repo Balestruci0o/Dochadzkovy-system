@@ -76,8 +76,8 @@ export async function togglePositionActiveAction(formData: FormData) {
 }
 
 /**
- * Blok 14, bod 1 — mazanie potvrdené kódom mailom. `employee_position_history.position_id`
- * nemá ON DELETE (žiadny CLAUDE.md princíp 8, história sa nestráca) — Postgres
+ * Mazanie potvrdené kódom mailom. `employee_position_history.position_id`
+ * nemá ON DELETE (história sa nestráca) — Postgres
  * sám zablokuje mazanie pozície, ktorú KEDYKOĽVEK držal aspoň jeden
  * zamestnanec; rovnako `coverage_requirements.position_id`. Chytáme tú istú
  * FK chybu a preložíme na zrozumiteľnú hlášku namiesto pádu.

@@ -5,8 +5,8 @@
 --
 -- "pipa" (default, dnešné správanie zachované) — odchod sa pípa cez
 -- terminál/web ako doteraz. Ak nepípne, zmena ostáva OTVORENÁ (status
--- 'working') navždy, kým ju manažér neopraví — presne dnešná politika
--- (ULOHY.md 7f), NEZMENENÉ.
+-- 'working') navždy, kým ju manažér neopraví — presne dnešná politika,
+-- NEZMENENÉ.
 --
 -- "nepipa" — systém AUTO-pípne odchod na konci PLÁNOVANEJ zmeny (cron,
 -- lib/punch/auto-close.ts), ak sa zamestnanec pípol na príchod a nepípol
@@ -16,8 +16,8 @@
 --
 -- Toto NIE JE zásah do prestávkového dôkazu (odišiel na prestávku,
 -- nevrátil sa → uzavrie sa v čase odchodu na prestávku) — ten platí PRE
--- VŠETKÝCH nezávisle od tohto nastavenia (je to dôkaz, nie hádanie,
--- CLAUDE.md princíp 7). "nepipa" pridáva DRUHÚ, doplnkovú podmienku
+-- VŠETKÝCH nezávisle od tohto nastavenia (je to dôkaz, nie hádanie).
+-- "nepipa" pridáva DRUHÚ, doplnkovú podmienku
 -- uzavretia, nenahrádza prvú.
 -- ============================================================================
 
