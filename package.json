@@ -4,6 +4,8 @@
   "description": "Dochádzkový a rozvrhový systém pre firmy s viacerými prevádzkami.",
   "license": "AGPL-3.0-or-later",
   "author": "Balestruci0o (https://github.com/Balestruci0o)",
+  "repository": "git+https://github.com/Balestruci0o/Dochadzkovy-system.git",
+  "homepage": "https://github.com/Balestruci0o/Dochadzkovy-system",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
